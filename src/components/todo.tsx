@@ -2,14 +2,13 @@ import { useState } from "react";
 import "../components/Styles/Card.css";
 import type { Todo } from "./type";
 
-export default function Card() {
-  const todo: Todo = {
-    name: "",
-    done: false,
-  };
+type CardProps = {
+  todo: Todo;
+};
 
-  const [checked, setChecked] = useState(todo.done);
-  const [name, setName] = useState(todo.name);
+export default function Card(props: CardProps) {
+  const [checked, setChecked] = useState(props.todo.done);
+  const [name, setName] = useState(props.todo.name);
 
   return (
     <div>
