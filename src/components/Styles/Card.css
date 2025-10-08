@@ -1,5 +1,143 @@
-#card {
+/* =====================
+   Todo Card - Enhanced
+   ===================== */
+.todo-item {
+  position: relative;
   display: flex;
-  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  background: #ffffff;
+  border: 1px solid var(--border, #e6e8eb);
+  padding: 0.75rem 0.9rem 0.75rem 1.05rem;
+  border-radius: 14px;
+  box-shadow: 0 2px 6px -2px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+  transition: border-color 0.2s, box-shadow 0.25s, background 0.25s, transform 0.25s;
+}
+.todo-item::before {
+  /* Accent bar */
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  border-top-left-radius: inherit;
+  border-bottom-left-radius: inherit;
+  background: linear-gradient(180deg, var(--accent, #10b981), var(--accent-hover, #059669));
+  opacity: 0;
+  transform: scaleY(0.4);
+  transform-origin: top;
+  transition: opacity 0.35s, transform 0.35s;
+}
+.todo-item:hover {
+  border-color: var(--border-strong, #d0d4d9);
+  box-shadow: 0 6px 18px -6px rgba(0, 0, 0, 0.18), 0 2px 6px -2px rgba(0, 0, 0, 0.08);
+}
+.todo-item:focus-within {
+  border-color: var(--accent, #10b981);
+}
+.todo-item.editing {
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25), 0 6px 18px -6px rgba(0, 0, 0, 0.18);
+}
+.todo-item.done {
+  opacity: 1;
+}
+.todo-item.done::before {
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+/* Checkbox */
+.todo-item input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: var(--accent, #10b981);
+  transition: transform 0.25s ease;
+  flex-shrink: 0;
+}
+.todo-item input[type="checkbox"]:active {
+  transform: scale(0.85);
+}
+
+/* Text input */
+.todo-item input[type="text"] {
+  flex: 1;
+  background: transparent;
+  border: 1px solid transparent;
+  padding: 0.4rem 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text, #1f2429);
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.18s, background 0.18s, color 0.25s;
+}
+.todo-item input[type="text"][readonly] {
+  color: var(--text-dim, #66737e);
+}
+.todo-item input[type="text"]:focus {
+  border-color: var(--accent, #10b981);
+  background: #f0fdf9;
+}
+.todo-item .name-strike {
+  text-decoration: line-through;
+  color: var(--text-dim, #66737e);
+  font-weight: 400;
+}
+
+/* Action buttons */
+.todo-actions {
+  display: flex;
   gap: 0.5rem;
+}
+.icon-btn {
+  position: relative;
+  background: #ffffff;
+  border: 1px solid var(--border, #e6e8eb);
+  padding: 0.45rem 0.75rem;
+  border-radius: 9px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  color: #374148;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: background 0.22s, border-color 0.22s, transform 0.18s, box-shadow 0.25s;
+}
+.icon-btn:hover {
+  background: #f5f7f9;
+}
+.icon-btn:active {
+  transform: translateY(1px);
+}
+.icon-btn:focus-visible {
+  outline: 2px solid var(--accent, #10b981);
+  outline-offset: 2px;
+}
+.icon-btn.success {
+  color: var(--accent, #10b981);
+}
+.danger {
+  background: #fff5f5;
+  border-color: #f5c2c2;
+  color: #b91c1c;
+}
+.danger:hover {
+  background: #ffe9e9;
+}
+
+/* Appear animation */
+.fade-in {
+  animation: cardFade 0.35s ease;
+}
+@keyframes cardFade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

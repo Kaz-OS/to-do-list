@@ -32,6 +32,9 @@ async function postData(data: NewTodo) {
 export default function Home() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newName, setNewName] = useState("");
+  const [theme, setTheme] = useState<"light" | "dark">(() =>
+    window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+  );
 
   useEffect(() => {
     getData().then(setTodos).catch(console.error);
@@ -49,16 +52,57 @@ export default function Home() {
     }
   }
 
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+  }, [theme]);
+
+  function toggleTheme() {
+    setTheme((t) => (t === "light" ? "dark" : "light"));
+  }
+
   return (
-    <div>
-      <form onSubmit={handleAdd} style={{ marginBottom: "1rem" }}>
-        <input value={newName} onChange={(e) => setNewName(e.target.value)} placeholder="Nouvelle tâche" />
-        <button type="submit">Ajouter</button>
-      </form>
-      <div className="card">
-        {todos.map((item) => (
-          <Card key={item.name} todo={item} />
-        ))}
+    <div className="app-root">
+      <div className="app-container">
+        <div className="panel fade-in">
+          <div className="top-bar">
+            <h1 style={{ margin: 0 }}>Tasks</h1>
+            <button type="button" className="theme-toggle" onClick={toggleTheme} aria-label="Changer de thème">
+              {theme === "light" ? (
+                <>
+                  <span role="img" aria-label="Sombre">
+                    🌙
+                  </span>{" "}
+                  Dark
+                </>
+              ) : (
+                <>
+                  <span role="img" aria-label="Clair">
+                    ☀️
+                  </span>{" "}
+                  Light
+                </>
+              )}
+            </button>
+          </div>
+          <form className="todo-form" onSubmit={handleAdd}>
+            <input
+              value={newName}
+              onChange={(e) => setNewName(e.target.value)}
+              placeholder="Nouvelle tâche"
+              aria-label="Nouvelle tâche"
+            />
+            <button type="submit" disabled={!newName.trim()}>
+              + Ajouter
+            </button>
+          </form>
+          <div className="divider" />
+          <ul className="todo-list">
+            {todos.length === 0 && <li className="empty-state">Aucune tâche pour l'instant.</li>}
+            {todos.map((item) => (
+              <Card key={item.name} todo={item} />
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );
